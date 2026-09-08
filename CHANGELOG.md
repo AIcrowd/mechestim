@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.11.1 (2026-09-08)
+
+### Perf
+
+- **client**: backport the per-leaf encode fast path from v0.12.0 (#244)
+
+### Billing: UNCHANGED from v0.11.0
+
+This release exists to be droppable into a re-grade whose results must match an
+earlier campaign, so the property that matters is what it does NOT change.
+
+`git diff v0.11.0..v0.11.1 -- src/flopscope` is **one line**: the version
+string. No pricing, no accounting, no wrapper touched. The single functional
+change lives in `flopscope-client` and leaves the **wire output byte-identical**
+-- the packed payload hashes the same before and after -- so the server receives
+the same bytes and computes the same values. Verified end to end: the analytical
+FLOP count is unchanged.
+
+Pinned by tests rather than asserted: the byte-equality and anti-spoofing tests
+carried over with the cherry-pick.
+
+Note for anyone tempted to branch from `main` instead: v0.12.0 carries a series
+of billing corrections (#238 through #251). They are right, and they re-price
+work that has already been metered. That is the reason this line branches from
+v0.11.0.
+
 ## v0.11.0 (2026-08-17)
 
 ### BREAKING CHANGE
